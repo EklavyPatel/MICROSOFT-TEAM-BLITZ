@@ -1,7 +1,0 @@
-node_modules/
-data/
-.env
-*.sqlite*
-*.db*
-*.log
-__pycache__/
