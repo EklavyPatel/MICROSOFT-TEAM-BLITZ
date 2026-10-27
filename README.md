@@ -1,3 +1,4 @@
+website link - https://microsoft-team-blitz.onrender.com/
 # CineMaTicS
 
 CineMaTicS is a responsive entertainment discovery and community website. The homepage follows the supplied cinematic mockup and includes show search, soundtrack discovery, trivia, community cinema rooms, discussion areas, accounts, and a saved-title list.
