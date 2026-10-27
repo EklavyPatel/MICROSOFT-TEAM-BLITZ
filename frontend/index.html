@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#111113" />
+    <title>WatchCircle — Better together</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script type="module" src="app.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <a class="brand" href="#"
+        ><span class="brand-mark" aria-hidden="true">◉</span> WatchCircle<span
+          class="brand-dot"
+          >.</span
+        ></a
+      >
+      <span class="header-note"
+        ><span class="status-dot"></span> Your next watch starts here</span
+      >
+      <a class="button button-small button-outline" href="#room-entry"
+        >Gather your circle <span aria-hidden="true">↗</span></a
+      >
+    </header>
+
+    <main id="main">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow">
+            <span class="short-line"></span> GOOD SHOWS. GREAT COMPANY.
+          </p>
+          <h1 id="hero-title">Make tonight<br />a <em>group thing.</em></h1>
+          <p class="hero-description">
+            Find your next obsession. Get the group on board.<br
+              class="desktop-break"
+            />
+            Give every episode an afterparty.
+          </p>
+          <div class="hero-details">
+            <span>01 &nbsp; Find a show</span
+            ><span>02 &nbsp; Rally the room</span
+            ><span>03 &nbsp; Press play</span>
+          </div>
+        </div>
+        <div class="cinema-art" aria-hidden="true">
+          <div class="orbit orbit-one"></div>
+          <div class="orbit orbit-two"></div>
+          <div class="ticket">
+            <span>ADMIT YOUR WHOLE CIRCLE</span
+            ><strong>ONE MORE<br />EPISODE.</strong>
+            <div class="ticket-rule"></div>
+            <div class="ticket-bottom">
+              <span>TONIGHT’S PLAN</span><span>▶ &nbsp; TOGETHER</span>
+            </div>
+          </div>
+          <span class="art-caption">THE BEST PART IS WHO YOU WATCH WITH.</span>
+        </div>
+      </section>
+
+      <aside class="connection-notice" role="status">
+        <span class="notice-icon" aria-hidden="true">+</span>
+        <div>
+          <strong>Your circle is one invitation away.</strong>
+          <p>
+            Find a show, create a room, and invite your friends with the room
+            code. The best watch plans are made together.
+          </p>
+        </div>
+      </aside>
+      <p
+        id="action-status"
+        class="action-status"
+        role="status"
+        aria-live="polite"
+      ></p>
+
+      <div class="discovery-grid">
+        <section class="panel discovery" aria-labelledby="discover-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">THE NEXT OBSESSION</p>
+              <h2 id="discover-title">Find something worth sharing.</h2>
+            </div>
+            <span class="section-number">01</span>
+          </div>
+          <form id="search-form" role="search">
+            <label class="sr-only" for="show-search">Search TV shows</label>
+            <div class="search-field">
+              <span aria-hidden="true">⌕</span
+              ><input
+                id="show-search"
+                name="query"
+                type="search"
+                placeholder="Search for a TV show…"
+                autocomplete="off"
+              /><button
+                type="button"
+                id="clear-search"
+                class="icon-button"
+                aria-label="Clear search"
+                hidden
+              >
+                ×</button
+              ><button class="button button-primary" id="search-submit">
+                Search
+              </button>
+            </div>
+          </form>
+          <div id="search-status" class="empty-state" role="status">
+            <span class="empty-symbol" aria-hidden="true">▤</span>
+            <h3>Your next favorite is out there.</h3>
+            <p>Search for a title to discover your next shared watch.</p>
+            <span class="quiet-label"
+              >POSTERS · SHOW DETAILS · SHARED PLANS</span
+            >
+          </div>
+          <div id="show-results" class="show-grid" aria-live="polite"></div>
+          <template id="show-card-template"
+            ><article class="show-card">
+              <div class="poster">
+                <span class="poster-fallback" aria-hidden="true"
+                  >◉<small>WATCHCIRCLE</small></span
+                ><img loading="lazy" hidden alt="" />
+              </div>
+              <div class="show-card-info">
+                <h3></h3>
+                <p></p>
+                <button class="button button-outline" disabled>
+                  Choose show
+                </button>
+              </div>
+            </article></template
+          >
+        </section>
+
+        <section
+          class="panel room-entry"
+          id="room-entry"
+          aria-labelledby="room-entry-title"
+        >
+          <p class="eyebrow">SAVE YOUR FRIENDS A SEAT</p>
+          <h2 id="room-entry-title">Your people.<br />Your watch room.</h2>
+          <p class="muted">A little space for big opinions.</p>
+          <label for="nickname">Your nickname</label
+          ><input
+            required
+            id="nickname"
+            name="nickname"
+            placeholder="What should we call you?"
+            autocomplete="nickname"
+          />
+          <div class="segmented" role="tablist" aria-label="Room entry">
+            <button
+              type="button"
+              id="create-tab"
+              role="tab"
+              aria-selected="true"
+              aria-controls="create-panel"
+              tabindex="0"
+            >
+              Create a room</button
+            ><button
+              type="button"
+              id="join-tab"
+              role="tab"
+              aria-selected="false"
+              aria-controls="join-panel"
+              tabindex="-1"
+            >
+              Join a room
+            </button>
+          </div>
+          <form id="create-panel" role="tabpanel" aria-labelledby="create-tab">
+            <p class="entry-description">
+              Start a circle, then invite everyone in.
+            </p>
+            <button class="button button-primary full-width" id="create-submit">
+              Create room <span aria-hidden="true">↗</span>
+            </button>
+          </form>
+          <form
+            id="join-panel"
+            role="tabpanel"
+            aria-labelledby="join-tab"
+            hidden
+          >
+            <label for="room-code">Room code</label
+            ><input
+              required
+              id="room-code"
+              name="roomCode"
+              placeholder="Enter your invitation code"
+              autocomplete="off"
+              spellcheck="false"
+            /><button class="button button-primary full-width" id="join-submit">
+              Join room <span aria-hidden="true">↗</span>
+            </button>
+          </form>
+          <p class="entry-footnote">
+            Create a room or join with a code from a friend.
+          </p>
+        </section>
+      </div>
+
+      <section class="room-workspace" aria-labelledby="workspace-title">
+        <div class="workspace-heading">
+          <div>
+            <p class="eyebrow">THE GROUP WATCH, SORTED</p>
+            <h2 id="workspace-title">Inside your circle</h2>
+          </div>
+          <div class="room-tools">
+            <span class="room-badge" id="room-badge">No active room</span
+            ><button
+              class="button button-small button-outline"
+              id="leave-room"
+              hidden
+            >
+              Leave room
+            </button>
+          </div>
+        </div>
+        <p class="workspace-description">
+          The plan, the hot takes, and a little friendly competition. All in one
+          place.
+        </p>
+        <div id="room-status" role="status" class="room-status">
+          No room joined. Room polling is stopped.
+        </div>
+        <div class="workspace-grid">
+          <section class="panel watch-plan" aria-labelledby="plan-title">
+            <div class="panel-title">
+              <h3 id="plan-title">
+                <span aria-hidden="true">◷</span> The watch plan
+              </h3>
+              <span class="small-badge">UP NEXT</span>
+            </div>
+            <div class="plan-placeholder" id="plan-display">
+              <span class="mini-poster" aria-hidden="true">▶</span>
+              <div>
+                <h4>The night is a blank canvas.</h4>
+                <p>Choose a show once you’re in a room.</p>
+              </div>
+            </div>
+            <div class="plan-fields">
+              <div>
+                <label for="plan-time">Watch time</label
+                ><input type="datetime-local" id="plan-time" />
+              </div>
+              <div>
+                <label for="plan-note">Plan note</label
+                ><input
+                  id="plan-note"
+                  placeholder="Episode, snacks, anything…"
+                />
+              </div>
+            </div>
+            <button
+              class="button button-outline full-width"
+              id="save-plan"
+              disabled
+            >
+              Save watch plan
+            </button>
+            <div class="poll">
+              <div>
+                <h4>Are you in?</h4>
+                <p id="poll-counts">Room votes will appear here.</p>
+              </div>
+              <div class="poll-actions">
+                <button
+                  class="button button-outline"
+                  id="vote-yes"
+                  aria-pressed="false"
+                  disabled
+                >
+                  ✓ Yes</button
+                ><button
+                  class="button button-outline"
+                  id="vote-no"
+                  aria-pressed="false"
+                  disabled
+                >
+                  × No
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel discussion" aria-labelledby="discussion-title">
+            <div class="panel-title">
+              <h3 id="discussion-title">
+                <span aria-hidden="true">☵</span> The conversation
+              </h3>
+              <span class="small-badge">DISCUSSION</span>
+            </div>
+            <div
+              id="discussion-feed"
+              class="feed"
+              role="log"
+              aria-label="Room discussion"
+              aria-relevant="additions"
+            >
+              <div class="empty-state compact">
+                <span class="empty-symbol" aria-hidden="true">“</span>
+                <h4>Every good show starts a conversation.</h4>
+                <p>Join a room to share your take.</p>
+              </div>
+            </div>
+            <form id="message-form">
+              <label class="sr-only" for="message-draft">Your message</label
+              ><textarea
+                required
+                id="message-draft"
+                name="message"
+                rows="2"
+                placeholder="Start a conversation…"
+              ></textarea>
+              <div class="composer-footer">
+                <span>Your draft stays while you explore.</span
+                ><button
+                  class="button button-primary button-small"
+                  id="send-message"
+                  disabled
+                >
+                  Send <span aria-hidden="true">↑</span>
+                </button>
+              </div>
+            </form>
+          </section>
+
+          <section class="panel trivia" aria-labelledby="trivia-title">
+            <div class="panel-title">
+              <h3 id="trivia-title">
+                <span aria-hidden="true">✧</span> General TV Trivia
+              </h3>
+              <span class="small-badge accent-badge">QUIZ TIME</span>
+            </div>
+            <p class="trivia-intro">
+              You’ve watched the shows.<br />Now prove you paid attention.
+            </p>
+            <div id="quiz-content" class="quiz-content">
+              <p class="muted">
+                Questions and answer choices will appear when a quiz is
+                available in your room.
+              </p>
+            </div>
+            <button
+              class="button button-outline full-width"
+              id="submit-quiz"
+              disabled
+            >
+              Submit answers
+            </button>
+          </section>
+
+          <section
+            class="panel leaderboard"
+            aria-labelledby="leaderboard-title"
+          >
+            <div class="panel-title">
+              <h3 id="leaderboard-title">
+                <span aria-hidden="true">♜</span> The leaderboard
+              </h3>
+              <span class="small-badge">BRAGGING RIGHTS</span>
+            </div>
+            <table>
+              <caption class="sr-only">
+                Room trivia scores
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col">Rank</th>
+                  <th scope="col">Player</th>
+                  <th scope="col">Points</th>
+                </tr>
+              </thead>
+              <tbody id="leaderboard-body">
+                <tr>
+                  <td colspan="3" class="table-empty">
+                    The top spot is waiting.<br /><span
+                      >Play a quiz with your circle to see scores.</span
+                    >
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+          <section
+            class="panel announcement"
+            aria-labelledby="announcement-title"
+          >
+            <div class="announcement-editor">
+              <div class="panel-title">
+                <h3 id="announcement-title">
+                  <span aria-hidden="true">⚑</span> Host announcement
+                </h3>
+                <span class="small-badge">HOST TOOLS</span>
+              </div>
+              <p class="muted">Get everyone on the same page.</p>
+              <label for="announcement-draft">Announcement draft</label
+              ><textarea
+                id="announcement-draft"
+                rows="3"
+                placeholder="Tonight’s plan, straight from the host…"
+              ></textarea>
+              <div id="published-announcement" hidden></div>
+              <div class="announcement-actions">
+                <button
+                  type="button"
+                  class="button button-outline"
+                  id="preview-announcement"
+                >
+                  Preview draft</button
+                ><button
+                  class="button button-primary"
+                  id="publish-announcement"
+                  disabled
+                >
+                  Publish announcement
+                </button>
+              </div>
+            </div>
+            <div class="announcement-preview">
+              <p class="eyebrow">ANNOUNCEMENT PREVIEW</p>
+              <p id="announcement-preview-text" class="preview-text">
+                Your announcement preview will appear here.
+              </p>
+              <span class="preview-footnote"
+                >Preview is a local draft until the server confirms it.
+                Publishing is host-only.</span
+              >
+            </div>
+          </section>
+        </div>
+      </section>
+    </main>
+    <footer>
+      <a class="brand" href="#"
+        >◉ &nbsp;WatchCircle<span class="brand-dot">.</span></a
+      ><span>Less scrolling. More watching. Together.</span>
+    </footer>
+  </body>
+</html>
