@@ -1121,3 +1121,70 @@ button[aria-busy="true"] {
     animation: none !important;
   }
 }
+/* WatchCircle community cinema */
+.top-nav { display:flex; gap:24px; font-size:12px; color:var(--muted); }
+.top-nav a:hover { color:var(--text); }
+.header-note { display:none; }
+.hero { grid-template-columns:1.03fr 1fr; }
+.mstc-scene { border-radius:18px; min-height:340px; background:radial-gradient(ellipse at 75% 22%,#80535444,transparent 48%),linear-gradient(160deg,#171c30,#492e3b 58%,#c7735844); isolation:isolate; }
+.scene-kicker { position:absolute; top:26px; left:25px; font-size:9px; letter-spacing:3px; color:#f4cdb4; z-index:3; }
+.scene-stars { position:absolute; inset:0; background-image:radial-gradient(1px 1px at 15% 25%,#fff9 98%,transparent),radial-gradient(1px 1px at 55% 13%,#fff9 98%,transparent),radial-gradient(1px 1px at 35% 31%,#fff9 98%,transparent),radial-gradient(1px 1px at 90% 40%,#fff9 98%,transparent); }
+.scene-moon { position:absolute; width:54px; height:54px; border-radius:50%; background:#f4d0ac; top:53px; right:52px; box-shadow:0 0 70px #edbd7e55,inset -12px -3px 0 #d4ac8c; }
+.hill { position:absolute; bottom:-5%; width:140%; height:62%; background:#38312c; clip-path:polygon(0 35%,16% 25%,31% 35%,49% 8%,66% 22%,83% 0,100% 35%,100% 100%,0 100%); }
+.hill-back { bottom:9%; background:linear-gradient(150deg,#835d4c,#3e3634); transform:scaleX(-1) rotate(5deg); }
+.hill-front { z-index:2; background:linear-gradient(160deg,#343830,#181c1e 80%); }
+.mstc-sign { position:absolute; top:35%; left:17%; z-index:1; color:#efe5ce; font-size:clamp(66px,7.2vw,100px); font-weight:900; line-height:1; letter-spacing:12px; transform:rotate(-7deg) skew(-7deg); text-shadow:3px 5px 0 #9b8b7b,6px 8px 0 #282526; }
+.scene-caption { position:absolute; bottom:68px; z-index:3; color:#ead9c2; font-family:Georgia,serif; font-style:italic; font-size:21px; }
+.scene-pill { position:absolute; bottom:28px; z-index:3; color:#b6b2a3; font-size:7px; letter-spacing:1.9px; }
+.feature-strip { display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; padding:18px 2px; border-top:1px solid var(--line); border-bottom:1px solid var(--line); margin-bottom:28px; font-size:11px; color:#c8bab1; }
+.search-suggestions { display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin:16px 0; font-size:10px; color:var(--muted); }
+.search-suggestions button { border:1px solid #484047; background:transparent; color:#d2c4b8; padding:5px 10px; border-radius:20px; font-size:10px; }
+.show-card-info p { display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+.member-list { display:flex; flex-wrap:wrap; gap:8px; margin:0 0 22px; }
+.member-chip { display:inline-flex; gap:8px; align-items:center; background:#242126; border:1px solid #3d343b; border-radius:30px; padding:6px 12px; font-size:11px; max-width:100%; overflow-wrap:anywhere; }
+.member-chip::before { content:'◉'; color:var(--accent); }
+.screening { margin-bottom:24px; background:linear-gradient(135deg,#242026,#17181d 70%); }
+.screening h2 { margin:0; font-size:26px; }
+.screening .eyebrow { margin-bottom:8px; }
+.screen-layout { display:grid; grid-template-columns:minmax(0,2.3fr) minmax(220px,1fr); gap:26px; }
+.video-stage { position:relative; aspect-ratio:16/9; border:1px solid #40373d; border-radius:10px; overflow:hidden; background:radial-gradient(ellipse at 50% 10%,#54404b55,#090a0e 75%); }
+#watch-player { width:100%; height:100%; object-fit:contain; background:#08090b; }
+.screen-empty { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; flex-direction:column; padding:24px; text-align:center; background:radial-gradient(ellipse at 50% 15%,#443340,#0d0e13 75%); }
+.screen-empty p { font-size:12px; max-width:280px; color:var(--muted); }
+.play-emblem { display:grid; place-items:center; border:1px solid #8a6758; width:54px; height:54px; border-radius:50%; margin-bottom:20px; color:var(--gold); background:#46302b55; }
+.player-toolbar { display:flex; flex-wrap:wrap; gap:8px; margin:14px 0; }
+.player-toolbar .button { padding:9px 12px; font-size:11px; gap:5px; }
+#screen-seek { padding:0; height:18px; accent-color:var(--accent); border:0; }
+.screen-timing { display:flex; justify-content:space-between; gap:12px; font-size:10px; color:var(--muted); }
+#screen-status { font-size:12px; margin:10px 0; }
+.media-credit { font-size:10px; color:#aaa2a6; margin-bottom:0; }
+.media-credit a { text-decoration:underline; text-underline-offset:3px; }
+.screen-sidebar { border-left:1px solid var(--line); padding-left:24px; min-width:0; }
+.screen-sidebar h3 { font-family:Georgia,serif; font-size:25px; line-height:1.35; overflow-wrap:anywhere; }
+#custom-media { margin-top:14px; }
+#custom-media summary { cursor:pointer; font-size:12px; color:var(--muted); }
+#media-form label { margin-top:12px; }
+#media-form .muted { font-size:10px; margin-top:10px; }
+.watch-reward { border-top:1px solid var(--line); margin-top:22px; padding-top:18px; display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
+.reward-number { color:var(--gold); font:38px Georgia,serif; }
+.watch-reward > div { flex:1; }
+.watch-reward strong { font-size:12px; }
+.watch-reward p { font-size:10px; color:var(--muted); margin:3px 0; }
+#watch-progress { width:100%; height:7px; accent-color:var(--accent); }
+#watch-progress-label { font-size:10px; color:var(--gold); margin-bottom:14px; }
+.screening-tip { font-size:10px; margin:10px 0 0; }
+.quiz-lock { padding:12px; border:1px solid #67523d; border-radius:8px; color:var(--gold); font-size:12px; }
+@media(max-width:1000px) { .top-nav { gap:12px; } .screen-layout { grid-template-columns:minmax(0,1.8fr) minmax(200px,1fr); gap:18px; } .screen-sidebar { padding-left:18px; } }
+@media(max-width:760px) { .top-nav { display:none; } .hero { grid-template-columns:1fr; } .mstc-scene { min-height:300px; border-radius:16px; } .mstc-sign { font-size:88px; left:22%; } .feature-strip { justify-content:flex-start; gap:12px 24px; font-size:10px; } .screen-layout { grid-template-columns:minmax(0,1fr); } .screen-sidebar { padding:18px 0 0; border-left:0; border-top:1px solid var(--line); } .screening h2 { font-size:22px; } .screen-timing { flex-wrap:wrap; gap:3px; } .room-tools { flex-wrap:wrap; } }
+@media(max-width:380px) { .mstc-sign { font-size:72px; left:14%; } .scene-caption { font-size:17px; } .scene-pill { font-size:6px; } .screen-empty { padding:10px; } .screen-empty p { font-size:10px; margin:0; } .screen-empty h3 { font-size:13px; margin-bottom:5px; } .play-emblem { width:32px; height:32px; margin-bottom:8px; } }
+
+/* A compact, horizontally browsable catalog keeps the cinema within reach. */
+.discovery-grid { align-items:start; }
+.discovery, .room-entry, .screen-main { min-width:0; }
+.show-grid { grid-template-columns:none; grid-auto-flow:column; grid-auto-columns:160px; overflow-x:auto; overscroll-behavior-x:contain; scroll-snap-type:x proximity; padding-bottom:14px; scrollbar-color:#765a50 #1a1a1d; }
+.show-card { scroll-snap-align:start; min-width:0; }
+.mstc-sign { z-index:3; }
+@media(max-width:760px) { .show-grid { grid-auto-columns:145px; } }
+
+.catalog-credit { font-size:10px; color:var(--muted); margin:10px 0 0; }
+.catalog-credit a { text-decoration:underline; text-underline-offset:3px; }

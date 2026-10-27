@@ -1,0 +1,8 @@
+Sintel — official trailer
+Copyright © Blender Foundation | durian.blender.org
+Licensed under Creative Commons Attribution 3.0 Unported (CC BY 3.0).
+License: https://creativecommons.org/licenses/by/3.0/
+Project and credits: https://durian.blender.org/
+Source: https://media.w3.org/2010/05/sintel/trailer.mp4
+Unmodified sample trailer, bundled for WatchCircle's shared playback demo.
+No endorsement of WatchCircle or MSTC by the Blender Foundation is implied.

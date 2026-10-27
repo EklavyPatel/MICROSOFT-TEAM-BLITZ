@@ -118,6 +118,7 @@ function validateRoom(room) {
 }
 
 function controls() {
+  screeningControls();
   const joined = !!state.code,
     host = !!state.room?.me.isHost,
     ready = !!state.room;
@@ -158,6 +159,7 @@ function controls() {
     !ready ||
     !state.room.quiz ||
     !state.room.quiz.questions.length ||
+    state.room.quiz.locked ||
     state.room.quiz.submitted ||
     state.submittedQuiz === state.room.quiz.id ||
     state.pending.has("quiz");
@@ -221,6 +223,7 @@ function stopRoom(message) {
   state.controller?.abort();
   state.code = null;
   state.room = null;
+  clearScreen();
   state.poller = null;
   state.controller = null;
   state.chosenShow = null;
@@ -301,6 +304,8 @@ function localTime(value) {
 }
 function renderRoom(room) {
   state.room = room;
+  renderScreen(room);
+  showMembers(room);
   $("room-status").textContent =
     `${room.members.length} in the circle · You’re ${room.me.nickname}${room.me.isHost ? " (host)" : ""} · Updates every 3 seconds`;
   $("room-status").classList.remove("error");
@@ -385,7 +390,7 @@ function renderFeed(messages) {
 }
 function renderQuiz(quiz) {
   // Keep existing radio nodes (focus and checked choices) across routine updates.
-  const key = quiz ? JSON.stringify([quiz.id, quiz.questions]) : null;
+  const key = quiz ? JSON.stringify([quiz.id, quiz.questions, quiz.locked]) : null;
   if (key === state.quizKey) return;
   const previous = new Map(
     [...$("quiz-content").querySelectorAll("input:checked")].map((input) => [
@@ -397,6 +402,10 @@ function renderQuiz(quiz) {
   if (!quiz || !quiz.questions.length) {
     $("quiz-content").textContent =
       "No quiz is available yet. Check back with your circle.";
+    return;
+  }
+  if (quiz.locked) {
+    $("quiz-content").replaceChildren(element("p", "The afterparty starts when the credits roll. The host will open trivia after the screening.", "quiz-lock"));
     return;
   }
   const fragment = document.createDocumentFragment();
@@ -474,6 +483,8 @@ function renderShows(shows) {
         fallback.hidden = false;
         image.hidden = true;
       });
+      // Lazy images must participate in layout before the browser starts loading.
+      image.hidden = false;
       image.src = src;
     }
     card.querySelector("h3").textContent = show.title;
@@ -527,7 +538,7 @@ for (const kind of ["create", "join"])
       actionStatus("Enter a nickname to join the circle.", true);
       return;
     }
-    const code = $("room-code").value.trim();
+    const code = $("room-code").value.trim().toUpperCase();
     if (kind === "join" && !code) {
       $("room-code").focus();
       return;
@@ -751,6 +762,156 @@ window.addEventListener("pageshow", () => {
     if (!document.hidden) state.poller?.start();
   }
 });
+// Synchronized playback shares the server's timeline; native media UI does not control the room.
+let currentScreenId = null;
+let latestScreen = null;
+let screenReceivedAt = 0;
+let heartbeatPending = false;
+const player = $("watch-player");
+player.muted = true;
+function screeningControls() {
+  const host = !!state.room?.me.isHost;
+  const screen = state.room?.screen;
+  const pending = state.pending.has("screen");
+  for (const id of ["load-sample", "save-media"]) $(id).disabled = !host || pending;
+  for (const id of ["screen-play", "screen-pause", "finish-screen", "screen-seek"])
+    $(id).disabled = !host || !screen || screen.finished || pending;
+  for (const id of ["enable-audio", "sync-video", "screen-fullscreen"]) $(id).disabled = !screen;
+  $("copy-invite").disabled = !state.room;
+  for (const id of ["media-title", "media-url", "media-duration"]) $(id).disabled = !host;
+}
+function timeLabel(seconds) {
+  const value = Math.max(0, Math.floor(seconds || 0));
+  return `${Math.floor(value / 60).toString().padStart(2, "0")}:${(value % 60).toString().padStart(2, "0")}`;
+}
+function desiredPosition() {
+  if (!latestScreen) return 0;
+  return Math.min(latestScreen.duration, latestScreen.position + (latestScreen.playing ? (performance.now() - screenReceivedAt) / 1000 : 0));
+}
+async function synchronizePlayer(force = false) {
+  const screen = latestScreen;
+  if (!screen || !player.readyState) return;
+  const expected = desiredPosition();
+  if (force || Math.abs(player.currentTime - expected) > 1.25) player.currentTime = expected;
+  if (screen.playing && !screen.finished && expected < screen.duration) {
+    try { await player.play(); }
+    catch { $("screen-status").textContent = "Your browser paused playback. Click Rejoin playback to start."; }
+  } else player.pause();
+}
+function renderScreen(room) {
+  const screen = room?.screen;
+  latestScreen = screen || null;
+  screenReceivedAt = performance.now();
+  if (!screen) {
+    if (currentScreenId) { player.pause(); player.removeAttribute("src"); player.load(); }
+    currentScreenId = null;
+    $("screen-empty").hidden = false;
+    $("screen-name").textContent = "The best seat is next to your friends.";
+    $("screen-badge").textContent = "READY WHEN YOU ARE";
+    $("screen-status").textContent = room ? "The host can load the sample film or a shareable video." : "Join your circle to start a screening.";
+    $("watch-progress").value = 0;
+    $("watch-progress-label").textContent = "Your watch progress appears here.";
+    $("screen-time").textContent = "00:00 / 00:00";
+    $("screen-seek").value = 0;
+    return;
+  }
+  $("screen-empty").hidden = true;
+  if (currentScreenId !== screen.id) {
+    currentScreenId = screen.id;
+    player.src = screen.url;
+    player.load();
+  }
+  $("screen-name").textContent = screen.title;
+  $("screen-badge").textContent = screen.finished ? "THE AFTERPARTY IS OPEN" : screen.playing ? "NOW WATCHING TOGETHER" : "LIGHTS DOWN. READY TO PLAY.";
+  $("screen-status").textContent = player.error ? "This video couldn’t load. Check the URL and try Rejoin playback." : screen.finished ? "Screening finished. Your trivia is ready below." : room.me.isHost ? "You’re hosting. Play, pause and seek for everyone in the circle." : "You’re watching with the host. Playback stays in sync automatically.";
+  const progress = screen.attendance;
+  $("watch-progress").value = Math.min(100, progress.seconds / progress.requiredSeconds * 100);
+  $("watch-progress-label").textContent = progress.awarded ? "+5 watch points earned. See your place on the leaderboard." : `${Math.floor(progress.seconds)} / ${Math.ceil(progress.requiredSeconds)} seconds watched toward +5 points`;
+  void synchronizePlayer();
+}
+function clearScreen() {
+  renderScreen(null);
+  $("members").replaceChildren();
+}
+function showMembers(room) {
+  $("members").replaceChildren(...room.members.map(member => element("span", `${member.nickname}${member.id === room.me.id ? " · you" : ""}`, "member-chip")));
+}
+for (const suggestion of document.querySelectorAll("[data-search]")) suggestion.addEventListener("click", () => {
+  $("show-search").value = suggestion.dataset.search;
+  $("clear-search").hidden = false;
+  $("search-form").requestSubmit();
+});
+$("copy-invite").addEventListener("click", () => void busy("invite", async () => {
+  if (!state.code) return;
+  const url = new URL(location.href);
+  url.search = ""; url.hash = "room-entry";
+  url.searchParams.set("room", state.code);
+  try { await navigator.clipboard.writeText(url.href); actionStatus("Invitation link copied. Send it to your circle."); }
+  catch { actionStatus(`Share this invitation code: ${state.code}`); }
+}));
+const invitation = new URLSearchParams(location.search).get("room");
+if (invitation) { $("room-code").value = invitation.toUpperCase(); switchTab(1); }
+$("load-sample").addEventListener("click", () => void busy("screen", async () => {
+  await mutate("/screen", { sample: true }, "PUT");
+  actionStatus("Sample film loaded. Press Play together when your circle is ready.");
+}));
+$("media-form").addEventListener("submit", event => {
+  event.preventDefault();
+  void busy("screen", async () => {
+    await mutate("/screen", { title: $("media-title").value.trim(), url: $("media-url").value.trim(), duration: Number($("media-duration").value) }, "PUT");
+    $("custom-media").open = false;
+    actionStatus("Video loaded for the circle.");
+  });
+});
+function playbackAction(action, position) {
+  void busy("screen", async () => {
+    const screen = state.room?.screen;
+    if (!screen || !state.room.me.isHost) return;
+    await mutate("/screen/control", { screenId: screen.id, action, ...(position === undefined ? {} : { position }) });
+    actionStatus(action === "finish" ? "The afterparty is open. Scroll down for trivia!" : "Shared playback updated.");
+  });
+}
+$("screen-play").addEventListener("click", () => playbackAction("play"));
+$("screen-pause").addEventListener("click", () => playbackAction("pause"));
+$("finish-screen").addEventListener("click", () => playbackAction("finish"));
+$("screen-seek").addEventListener("change", () => playbackAction("seek", Number($("screen-seek").value) / 100 * (latestScreen?.duration || 0)));
+$("sync-video").addEventListener("click", () => {
+  if (player.error) player.load();
+  else void synchronizePlayer(true);
+});
+$("enable-audio").addEventListener("click", () => {
+  player.muted = !player.muted;
+  $("enable-audio").textContent = player.muted ? "Enable sound" : "Mute sound";
+  void synchronizePlayer();
+});
+$("screen-fullscreen").addEventListener("click", () => {
+  const operation = player.requestFullscreen?.();
+  operation?.catch(() => actionStatus("Fullscreen isn’t available in this browser.", true));
+});
+player.addEventListener("loadedmetadata", () => void synchronizePlayer(true));
+player.addEventListener("error", () => { if (latestScreen) $("screen-status").textContent = "This video couldn’t load. Check the video URL or network access, then try Rejoin playback. Room chat and planning are still available."; });
+player.addEventListener("timeupdate", () => {
+  if (!latestScreen) return;
+  $("screen-time").textContent = `${timeLabel(player.currentTime)} / ${timeLabel(latestScreen.duration)}`;
+  if (document.activeElement !== $("screen-seek")) $("screen-seek").value = player.currentTime / latestScreen.duration * 100;
+});
+async function sendHeartbeat() {
+  const screen = state.room?.screen;
+  if (!screen || screen.finished || heartbeatPending || !state.code) return;
+  heartbeatPending = true;
+  try {
+    await request(roomPath("/screen/heartbeat"), { method: "POST", signal: state.controller.signal,
+      body: { screenId: screen.id, position: player.currentTime, watching: !document.hidden && !player.paused && !player.ended && player.readyState >= 3 } });
+  } catch (error) {
+    if (error.name !== "AbortError") $("screen-status").textContent = "Watch progress couldn’t sync. Reconnecting on the next update.";
+  } finally { heartbeatPending = false; }
+}
+setInterval(() => void sendHeartbeat(), 3000);
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) void sendHeartbeat();
+  else void synchronizePlayer(true);
+});
+
 controls();
 const savedRoom = load("watchcircle.room");
 if (savedRoom) enterRoom(savedRoom);

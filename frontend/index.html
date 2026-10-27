@@ -17,7 +17,7 @@
           >.</span
         ></a
       >
-      <span class="header-note"
+      <nav class="top-nav" aria-label="Main navigation"><a href="#discover-title">Discover</a><a href="#screening">Watch together</a><a href="#workspace-title">Community</a></nav><span class="header-note"
         ><span class="status-dot"></span> Your next watch starts here</span
       >
       <a class="button button-small button-outline" href="#room-entry"
@@ -36,7 +36,7 @@
             Find your next obsession. Get the group on board.<br
               class="desktop-break"
             />
-            Give every episode an afterparty.
+            Watch in sync. Talk through the credits. Own the leaderboard.
           </p>
           <div class="hero-details">
             <span>01 &nbsp; Find a show</span
@@ -44,21 +44,17 @@
             ><span>03 &nbsp; Press play</span>
           </div>
         </div>
-        <div class="cinema-art" aria-hidden="true">
-          <div class="orbit orbit-one"></div>
-          <div class="orbit orbit-two"></div>
-          <div class="ticket">
-            <span>ADMIT YOUR WHOLE CIRCLE</span
-            ><strong>ONE MORE<br />EPISODE.</strong>
-            <div class="ticket-rule"></div>
-            <div class="ticket-bottom">
-              <span>TONIGHT’S PLAN</span><span>▶ &nbsp; TOGETHER</span>
-            </div>
-          </div>
-          <span class="art-caption">THE BEST PART IS WHO YOU WATCH WITH.</span>
+        <div class="cinema-art mstc-scene" aria-label="MSTC hillside cinema illustration" role="img">
+          <div class="scene-stars"></div><div class="scene-moon"></div>
+          <span class="scene-kicker">A COMMUNITY ORIGINAL</span>
+          <div class="hill hill-back"></div><div class="hill hill-front"></div>
+          <strong class="mstc-sign">MSTC</strong>
+          <span class="scene-caption">A thousand stories. One circle.</span>
+          <span class="scene-pill">✦ &nbsp; THE COMMUNITY IS THE MAIN CHARACTER</span>
         </div>
       </section>
 
+      <div class="feature-strip"><span>▶ &nbsp; Watch in sync</span><span>◌ &nbsp; Your private community</span><span>+5 &nbsp; Watch points</span><span>✦ &nbsp; After-show trivia</span></div>
       <aside class="connection-notice" role="status">
         <span class="notice-icon" aria-hidden="true">+</span>
         <div>
@@ -108,15 +104,17 @@
               </button>
             </div>
           </form>
+          <div class="search-suggestions" aria-label="Search suggestions"><span>Find your next watch</span><button type="button" data-search="Dark">Dark</button><button type="button" data-search="Stranger Things">Stranger Things</button><button type="button" data-search="The Office">The Office</button></div>
           <div id="search-status" class="empty-state" role="status">
             <span class="empty-symbol" aria-hidden="true">▤</span>
             <h3>Your next favorite is out there.</h3>
             <p>Search for a title to discover your next shared watch.</p>
             <span class="quiet-label"
-              >POSTERS · SHOW DETAILS · SHARED PLANS</span
+              >SHOW METADATA & POSTERS VIA TVMAZE</span
             >
           </div>
           <div id="show-results" class="show-grid" aria-live="polite"></div>
+          <p class="catalog-credit">Show data and artwork via <a href="https://www.tvmaze.com/" target="_blank" rel="noopener noreferrer">TVmaze</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer">CC BY-SA</a></p>
           <template id="show-card-template"
             ><article class="show-card">
               <div class="poster">
@@ -211,7 +209,7 @@
             <h2 id="workspace-title">Inside your circle</h2>
           </div>
           <div class="room-tools">
-            <span class="room-badge" id="room-badge">No active room</span
+            <button type="button" class="button button-small button-outline" id="copy-invite" disabled>Copy invite</button><span class="room-badge" id="room-badge">No active room</span
             ><button
               class="button button-small button-outline"
               id="leave-room"
@@ -228,6 +226,26 @@
         <div id="room-status" role="status" class="room-status">
           No room joined. Room polling is stopped.
         </div>
+        <div id="members" class="member-list" aria-label="Community members"></div>
+        <section id="screening" class="panel screening" aria-labelledby="screening-title">
+          <div class="panel-title"><div><p class="eyebrow">THE LIGHTS ARE DOWN. YOUR PEOPLE ARE HERE.</p><h2 id="screening-title">Your community cinema</h2></div><span id="screen-badge" class="small-badge accent-badge">READY WHEN YOU ARE</span></div>
+          <div class="screen-layout">
+            <div class="screen-main">
+              <div class="video-stage"><video id="watch-player" playsinline preload="metadata" aria-label="Shared video player"></video><div id="screen-empty" class="screen-empty"><span class="play-emblem">▶</span><h3>Better with a full circle.</h3><p>Create a room, load our sample film, and press play together.</p></div></div>
+              <div class="player-toolbar"><button type="button" class="button button-primary" id="screen-play" disabled>▶ Play together</button><button type="button" class="button button-outline" id="screen-pause" disabled>Pause</button><button type="button" class="button button-outline" id="enable-audio" disabled>Enable sound</button><button type="button" class="button button-outline" id="sync-video" disabled>Rejoin playback</button><button type="button" class="button button-outline" id="screen-fullscreen" disabled>Fullscreen</button></div>
+              <label for="screen-seek" class="sr-only">Shared playback position (host only)</label><input type="range" id="screen-seek" min="0" max="100" value="0" step="1" disabled />
+              <div class="screen-timing"><span id="screen-time">00:00 / 00:00</span><span>Host controls the room · syncs every 3 seconds</span></div>
+              <p id="screen-status" class="muted" role="status">Join your circle to start a screening.</p>
+              <p class="media-credit">Sample: <a href="https://durian.blender.org/" target="_blank" rel="noopener noreferrer">Sintel trailer · © Blender Foundation · CC BY 3.0</a>. Show search is for discovery; streaming-service subscriptions play separately.</p>
+            </div>
+            <aside class="screen-sidebar"><p class="eyebrow">TONIGHT, TOGETHER</p><h3 id="screen-name">The best seat is next to your friends.</h3>
+              <button type="button" class="button button-primary full-width" id="load-sample" disabled>Load sample film ↗</button>
+              <details id="custom-media"><summary>Bring your own video</summary><form id="media-form"><label for="media-title">Video title</label><input id="media-title" maxlength="100" required placeholder="Our movie night"/><label for="media-url">Shareable HTTPS video URL</label><input id="media-url" type="url" required placeholder="https://…/movie.mp4"/><label for="media-duration">Duration in seconds</label><input id="media-duration" type="number" min="10" max="14400" required/><p class="muted">Use videos you own or have permission to share. Direct MP4/WebM links work; streaming-service page links do not.</p><button class="button button-outline full-width" id="save-media">Load video</button></form></details>
+              <div class="watch-reward"><span class="reward-number">+5</span><div><strong>Show up. Watch. Earn.</strong><p>Watch 80% of the video while this tab is visible. One watch reward per room.</p></div><progress id="watch-progress" max="100" value="0" aria-label="Progress toward watch points"></progress><span id="watch-progress-label">Your watch progress appears here.</span></div>
+              <button type="button" class="button button-outline full-width" id="finish-screen" disabled>Finish screening & open trivia</button><p class="muted screening-tip">The host opens the afterparty. Each correct trivia answer earns 10 points.</p>
+            </aside>
+          </div>
+        </section>
         <div class="workspace-grid">
           <section class="panel watch-plan" aria-labelledby="plan-title">
             <div class="panel-title">
@@ -440,7 +458,7 @@
     <footer>
       <a class="brand" href="#"
         >◉ &nbsp;WatchCircle<span class="brand-dot">.</span></a
-      ><span>Less scrolling. More watching. Together.</span>
+      ><span>Made for the MSTC community. Less scrolling. More watching.</span>
     </footer>
   </body>
 </html>

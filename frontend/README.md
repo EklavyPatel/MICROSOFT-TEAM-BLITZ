@@ -1,8 +1,9 @@
 # WatchCircle frontend
 
 Responsive dark cinema interface built with HTML, CSS, and vanilla JavaScript.
-There is no build step, framework, runtime dependency, production mock, or
-backend implementation in this directory.
+The same-origin Express/SQLite backend lives in `../backend/`. Start the complete
+application with `cd backend && npm ci && npm start` from the repository root.
+There is no frontend framework or dependency installation step.
 
 ## Download a single HTML file
 
@@ -32,14 +33,17 @@ as a backend implementing [API_CONTRACT.md](API_CONTRACT.md), routing `/api/` to
 that backend. The browser uses root-relative `fetch()` requests and same-origin
 session cookies. Opening `index.html` as a `file:` URL does not support modules.
 
-## Contract status
+## Backend and shared cinema
 
-The repository was empty and contained no agreed contract. After the user
-authorized defining one, the frontend proposed the contract in this directory.
-It is **not verified against a backend**. Unexpected response shapes produce
-explicit contract errors rather than fabricated data. Real room workflows,
-scoring, session handling, permissions, and announcement delivery require the
-backend. Discord credentials and delivery logic must remain on that server.
+The backend implements `API_CONTRACT.md`, persists state in SQLite, and serves
+this frontend on the same origin. The source page includes synchronized sample
+video, host playback controls, invitation links, community members, watch-progress
+rewards and post-screening trivia. The MSTC hillside artwork is CSS, with no image
+service dependency. The sample video is bundled in `media/` with its attribution.
+
+For the connected experience, use the Node server on port 3000. The static Python
+server below is only for isolated frontend inspection. Discord delivery is not
+implemented; announcements are published inside the room.
 
 ## Behavior
 
@@ -82,3 +86,5 @@ exercise the full room workflow, request failures with no backend, host controls
 expiration, preserved drafts/answers, duplicate submits, XSS-safe content,
 keyboard tab navigation, and layouts at 320, 375, 768, and 1440 pixels. These
 tests validate the frontend, not live backend compatibility.
+
+Live integration tests with the actual backend are in `backend/tests/test_live_browser.py`; see the backend README.

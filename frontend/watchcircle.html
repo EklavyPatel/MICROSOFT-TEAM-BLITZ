@@ -1130,6 +1130,73 @@ button[aria-busy="true"] {
     animation: none !important;
   }
 }
+/* WatchCircle community cinema */
+.top-nav { display:flex; gap:24px; font-size:12px; color:var(--muted); }
+.top-nav a:hover { color:var(--text); }
+.header-note { display:none; }
+.hero { grid-template-columns:1.03fr 1fr; }
+.mstc-scene { border-radius:18px; min-height:340px; background:radial-gradient(ellipse at 75% 22%,#80535444,transparent 48%),linear-gradient(160deg,#171c30,#492e3b 58%,#c7735844); isolation:isolate; }
+.scene-kicker { position:absolute; top:26px; left:25px; font-size:9px; letter-spacing:3px; color:#f4cdb4; z-index:3; }
+.scene-stars { position:absolute; inset:0; background-image:radial-gradient(1px 1px at 15% 25%,#fff9 98%,transparent),radial-gradient(1px 1px at 55% 13%,#fff9 98%,transparent),radial-gradient(1px 1px at 35% 31%,#fff9 98%,transparent),radial-gradient(1px 1px at 90% 40%,#fff9 98%,transparent); }
+.scene-moon { position:absolute; width:54px; height:54px; border-radius:50%; background:#f4d0ac; top:53px; right:52px; box-shadow:0 0 70px #edbd7e55,inset -12px -3px 0 #d4ac8c; }
+.hill { position:absolute; bottom:-5%; width:140%; height:62%; background:#38312c; clip-path:polygon(0 35%,16% 25%,31% 35%,49% 8%,66% 22%,83% 0,100% 35%,100% 100%,0 100%); }
+.hill-back { bottom:9%; background:linear-gradient(150deg,#835d4c,#3e3634); transform:scaleX(-1) rotate(5deg); }
+.hill-front { z-index:2; background:linear-gradient(160deg,#343830,#181c1e 80%); }
+.mstc-sign { position:absolute; top:35%; left:17%; z-index:1; color:#efe5ce; font-size:clamp(66px,7.2vw,100px); font-weight:900; line-height:1; letter-spacing:12px; transform:rotate(-7deg) skew(-7deg); text-shadow:3px 5px 0 #9b8b7b,6px 8px 0 #282526; }
+.scene-caption { position:absolute; bottom:68px; z-index:3; color:#ead9c2; font-family:Georgia,serif; font-style:italic; font-size:21px; }
+.scene-pill { position:absolute; bottom:28px; z-index:3; color:#b6b2a3; font-size:7px; letter-spacing:1.9px; }
+.feature-strip { display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; padding:18px 2px; border-top:1px solid var(--line); border-bottom:1px solid var(--line); margin-bottom:28px; font-size:11px; color:#c8bab1; }
+.search-suggestions { display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin:16px 0; font-size:10px; color:var(--muted); }
+.search-suggestions button { border:1px solid #484047; background:transparent; color:#d2c4b8; padding:5px 10px; border-radius:20px; font-size:10px; }
+.show-card-info p { display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+.member-list { display:flex; flex-wrap:wrap; gap:8px; margin:0 0 22px; }
+.member-chip { display:inline-flex; gap:8px; align-items:center; background:#242126; border:1px solid #3d343b; border-radius:30px; padding:6px 12px; font-size:11px; max-width:100%; overflow-wrap:anywhere; }
+.member-chip::before { content:'◉'; color:var(--accent); }
+.screening { margin-bottom:24px; background:linear-gradient(135deg,#242026,#17181d 70%); }
+.screening h2 { margin:0; font-size:26px; }
+.screening .eyebrow { margin-bottom:8px; }
+.screen-layout { display:grid; grid-template-columns:minmax(0,2.3fr) minmax(220px,1fr); gap:26px; }
+.video-stage { position:relative; aspect-ratio:16/9; border:1px solid #40373d; border-radius:10px; overflow:hidden; background:radial-gradient(ellipse at 50% 10%,#54404b55,#090a0e 75%); }
+#watch-player { width:100%; height:100%; object-fit:contain; background:#08090b; }
+.screen-empty { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; flex-direction:column; padding:24px; text-align:center; background:radial-gradient(ellipse at 50% 15%,#443340,#0d0e13 75%); }
+.screen-empty p { font-size:12px; max-width:280px; color:var(--muted); }
+.play-emblem { display:grid; place-items:center; border:1px solid #8a6758; width:54px; height:54px; border-radius:50%; margin-bottom:20px; color:var(--gold); background:#46302b55; }
+.player-toolbar { display:flex; flex-wrap:wrap; gap:8px; margin:14px 0; }
+.player-toolbar .button { padding:9px 12px; font-size:11px; gap:5px; }
+#screen-seek { padding:0; height:18px; accent-color:var(--accent); border:0; }
+.screen-timing { display:flex; justify-content:space-between; gap:12px; font-size:10px; color:var(--muted); }
+#screen-status { font-size:12px; margin:10px 0; }
+.media-credit { font-size:10px; color:#aaa2a6; margin-bottom:0; }
+.media-credit a { text-decoration:underline; text-underline-offset:3px; }
+.screen-sidebar { border-left:1px solid var(--line); padding-left:24px; min-width:0; }
+.screen-sidebar h3 { font-family:Georgia,serif; font-size:25px; line-height:1.35; overflow-wrap:anywhere; }
+#custom-media { margin-top:14px; }
+#custom-media summary { cursor:pointer; font-size:12px; color:var(--muted); }
+#media-form label { margin-top:12px; }
+#media-form .muted { font-size:10px; margin-top:10px; }
+.watch-reward { border-top:1px solid var(--line); margin-top:22px; padding-top:18px; display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
+.reward-number { color:var(--gold); font:38px Georgia,serif; }
+.watch-reward > div { flex:1; }
+.watch-reward strong { font-size:12px; }
+.watch-reward p { font-size:10px; color:var(--muted); margin:3px 0; }
+#watch-progress { width:100%; height:7px; accent-color:var(--accent); }
+#watch-progress-label { font-size:10px; color:var(--gold); margin-bottom:14px; }
+.screening-tip { font-size:10px; margin:10px 0 0; }
+.quiz-lock { padding:12px; border:1px solid #67523d; border-radius:8px; color:var(--gold); font-size:12px; }
+@media(max-width:1000px) { .top-nav { gap:12px; } .screen-layout { grid-template-columns:minmax(0,1.8fr) minmax(200px,1fr); gap:18px; } .screen-sidebar { padding-left:18px; } }
+@media(max-width:760px) { .top-nav { display:none; } .hero { grid-template-columns:1fr; } .mstc-scene { min-height:300px; border-radius:16px; } .mstc-sign { font-size:88px; left:22%; } .feature-strip { justify-content:flex-start; gap:12px 24px; font-size:10px; } .screen-layout { grid-template-columns:minmax(0,1fr); } .screen-sidebar { padding:18px 0 0; border-left:0; border-top:1px solid var(--line); } .screening h2 { font-size:22px; } .screen-timing { flex-wrap:wrap; gap:3px; } .room-tools { flex-wrap:wrap; } }
+@media(max-width:380px) { .mstc-sign { font-size:72px; left:14%; } .scene-caption { font-size:17px; } .scene-pill { font-size:6px; } .screen-empty { padding:10px; } .screen-empty p { font-size:10px; margin:0; } .screen-empty h3 { font-size:13px; margin-bottom:5px; } .play-emblem { width:32px; height:32px; margin-bottom:8px; } }
+
+/* A compact, horizontally browsable catalog keeps the cinema within reach. */
+.discovery-grid { align-items:start; }
+.discovery, .room-entry, .screen-main { min-width:0; }
+.show-grid { grid-template-columns:none; grid-auto-flow:column; grid-auto-columns:160px; overflow-x:auto; overscroll-behavior-x:contain; scroll-snap-type:x proximity; padding-bottom:14px; scrollbar-color:#765a50 #1a1a1d; }
+.show-card { scroll-snap-align:start; min-width:0; }
+.mstc-sign { z-index:3; }
+@media(max-width:760px) { .show-grid { grid-auto-columns:145px; } }
+
+.catalog-credit { font-size:10px; color:var(--muted); margin:10px 0 0; }
+.catalog-credit a { text-decoration:underline; text-underline-offset:3px; }
 
 </style>
 
@@ -1143,7 +1210,7 @@ button[aria-busy="true"] {
           >.</span
         ></a
       >
-      <span class="header-note"
+      <nav class="top-nav" aria-label="Main navigation"><a href="#discover-title">Discover</a><a href="#screening">Watch together</a><a href="#workspace-title">Community</a></nav><span class="header-note"
         ><span class="status-dot"></span> Your next watch starts here</span
       >
       <a class="button button-small button-outline" href="#room-entry"
@@ -1162,7 +1229,7 @@ button[aria-busy="true"] {
             Find your next obsession. Get the group on board.<br
               class="desktop-break"
             />
-            Give every episode an afterparty.
+            Watch in sync. Talk through the credits. Own the leaderboard.
           </p>
           <div class="hero-details">
             <span>01 &nbsp; Find a show</span
@@ -1170,21 +1237,17 @@ button[aria-busy="true"] {
             ><span>03 &nbsp; Press play</span>
           </div>
         </div>
-        <div class="cinema-art" aria-hidden="true">
-          <div class="orbit orbit-one"></div>
-          <div class="orbit orbit-two"></div>
-          <div class="ticket">
-            <span>ADMIT YOUR WHOLE CIRCLE</span
-            ><strong>ONE MORE<br />EPISODE.</strong>
-            <div class="ticket-rule"></div>
-            <div class="ticket-bottom">
-              <span>TONIGHT’S PLAN</span><span>▶ &nbsp; TOGETHER</span>
-            </div>
-          </div>
-          <span class="art-caption">THE BEST PART IS WHO YOU WATCH WITH.</span>
+        <div class="cinema-art mstc-scene" aria-label="MSTC hillside cinema illustration" role="img">
+          <div class="scene-stars"></div><div class="scene-moon"></div>
+          <span class="scene-kicker">A COMMUNITY ORIGINAL</span>
+          <div class="hill hill-back"></div><div class="hill hill-front"></div>
+          <strong class="mstc-sign">MSTC</strong>
+          <span class="scene-caption">A thousand stories. One circle.</span>
+          <span class="scene-pill">✦ &nbsp; THE COMMUNITY IS THE MAIN CHARACTER</span>
         </div>
       </section>
 
+      <div class="feature-strip"><span>▶ &nbsp; Watch in sync</span><span>◌ &nbsp; Your private community</span><span>+5 &nbsp; Watch points</span><span>✦ &nbsp; After-show trivia</span></div>
       <aside class="connection-notice" role="status">
         <span class="notice-icon" aria-hidden="true">+</span>
         <div>
@@ -1234,15 +1297,17 @@ button[aria-busy="true"] {
               </button>
             </div>
           </form>
+          <div class="search-suggestions" aria-label="Search suggestions"><span>Find your next watch</span><button type="button" data-search="Dark">Dark</button><button type="button" data-search="Stranger Things">Stranger Things</button><button type="button" data-search="The Office">The Office</button></div>
           <div id="search-status" class="empty-state" role="status">
             <span class="empty-symbol" aria-hidden="true">▤</span>
             <h3>Your next favorite is out there.</h3>
             <p>Search for a title to discover your next shared watch.</p>
             <span class="quiet-label"
-              >POSTERS · SHOW DETAILS · SHARED PLANS</span
+              >SHOW METADATA & POSTERS VIA TVMAZE</span
             >
           </div>
           <div id="show-results" class="show-grid" aria-live="polite"></div>
+          <p class="catalog-credit">Show data and artwork via <a href="https://www.tvmaze.com/" target="_blank" rel="noopener noreferrer">TVmaze</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer">CC BY-SA</a></p>
           <template id="show-card-template"
             ><article class="show-card">
               <div class="poster">
@@ -1337,7 +1402,7 @@ button[aria-busy="true"] {
             <h2 id="workspace-title">Inside your circle</h2>
           </div>
           <div class="room-tools">
-            <span class="room-badge" id="room-badge">No active room</span
+            <button type="button" class="button button-small button-outline" id="copy-invite" disabled>Copy invite</button><span class="room-badge" id="room-badge">No active room</span
             ><button
               class="button button-small button-outline"
               id="leave-room"
@@ -1354,6 +1419,26 @@ button[aria-busy="true"] {
         <div id="room-status" role="status" class="room-status">
           No room joined. Room polling is stopped.
         </div>
+        <div id="members" class="member-list" aria-label="Community members"></div>
+        <section id="screening" class="panel screening" aria-labelledby="screening-title">
+          <div class="panel-title"><div><p class="eyebrow">THE LIGHTS ARE DOWN. YOUR PEOPLE ARE HERE.</p><h2 id="screening-title">Your community cinema</h2></div><span id="screen-badge" class="small-badge accent-badge">READY WHEN YOU ARE</span></div>
+          <div class="screen-layout">
+            <div class="screen-main">
+              <div class="video-stage"><video id="watch-player" playsinline preload="metadata" aria-label="Shared video player"></video><div id="screen-empty" class="screen-empty"><span class="play-emblem">▶</span><h3>Better with a full circle.</h3><p>Create a room, load our sample film, and press play together.</p></div></div>
+              <div class="player-toolbar"><button type="button" class="button button-primary" id="screen-play" disabled>▶ Play together</button><button type="button" class="button button-outline" id="screen-pause" disabled>Pause</button><button type="button" class="button button-outline" id="enable-audio" disabled>Enable sound</button><button type="button" class="button button-outline" id="sync-video" disabled>Rejoin playback</button><button type="button" class="button button-outline" id="screen-fullscreen" disabled>Fullscreen</button></div>
+              <label for="screen-seek" class="sr-only">Shared playback position (host only)</label><input type="range" id="screen-seek" min="0" max="100" value="0" step="1" disabled />
+              <div class="screen-timing"><span id="screen-time">00:00 / 00:00</span><span>Host controls the room · syncs every 3 seconds</span></div>
+              <p id="screen-status" class="muted" role="status">Join your circle to start a screening.</p>
+              <p class="media-credit">Sample: <a href="https://durian.blender.org/" target="_blank" rel="noopener noreferrer">Sintel trailer · © Blender Foundation · CC BY 3.0</a>. Show search is for discovery; streaming-service subscriptions play separately.</p>
+            </div>
+            <aside class="screen-sidebar"><p class="eyebrow">TONIGHT, TOGETHER</p><h3 id="screen-name">The best seat is next to your friends.</h3>
+              <button type="button" class="button button-primary full-width" id="load-sample" disabled>Load sample film ↗</button>
+              <details id="custom-media"><summary>Bring your own video</summary><form id="media-form"><label for="media-title">Video title</label><input id="media-title" maxlength="100" required placeholder="Our movie night"/><label for="media-url">Shareable HTTPS video URL</label><input id="media-url" type="url" required placeholder="https://…/movie.mp4"/><label for="media-duration">Duration in seconds</label><input id="media-duration" type="number" min="10" max="14400" required/><p class="muted">Use videos you own or have permission to share. Direct MP4/WebM links work; streaming-service page links do not.</p><button class="button button-outline full-width" id="save-media">Load video</button></form></details>
+              <div class="watch-reward"><span class="reward-number">+5</span><div><strong>Show up. Watch. Earn.</strong><p>Watch 80% of the video while this tab is visible. One watch reward per room.</p></div><progress id="watch-progress" max="100" value="0" aria-label="Progress toward watch points"></progress><span id="watch-progress-label">Your watch progress appears here.</span></div>
+              <button type="button" class="button button-outline full-width" id="finish-screen" disabled>Finish screening & open trivia</button><p class="muted screening-tip">The host opens the afterparty. Each correct trivia answer earns 10 points.</p>
+            </aside>
+          </div>
+        </section>
         <div class="workspace-grid">
           <section class="panel watch-plan" aria-labelledby="plan-title">
             <div class="panel-title">
@@ -1566,7 +1651,7 @@ button[aria-busy="true"] {
     <footer>
       <a class="brand" href="#"
         >◉ &nbsp;WatchCircle<span class="brand-dot">.</span></a
-      ><span>Less scrolling. More watching. Together.</span>
+      ><span>Made for the MSTC community. Less scrolling. More watching.</span>
     </footer>
   <script>
 "use strict";
@@ -1792,6 +1877,7 @@ function validateRoom(room) {
 }
 
 function controls() {
+  screeningControls();
   const joined = !!state.code,
     host = !!state.room?.me.isHost,
     ready = !!state.room;
@@ -1832,6 +1918,7 @@ function controls() {
     !ready ||
     !state.room.quiz ||
     !state.room.quiz.questions.length ||
+    state.room.quiz.locked ||
     state.room.quiz.submitted ||
     state.submittedQuiz === state.room.quiz.id ||
     state.pending.has("quiz");
@@ -1895,6 +1982,7 @@ function stopRoom(message) {
   state.controller?.abort();
   state.code = null;
   state.room = null;
+  clearScreen();
   state.poller = null;
   state.controller = null;
   state.chosenShow = null;
@@ -1975,6 +2063,8 @@ function localTime(value) {
 }
 function renderRoom(room) {
   state.room = room;
+  renderScreen(room);
+  showMembers(room);
   $("room-status").textContent =
     `${room.members.length} in the circle · You’re ${room.me.nickname}${room.me.isHost ? " (host)" : ""} · Updates every 3 seconds`;
   $("room-status").classList.remove("error");
@@ -2059,7 +2149,7 @@ function renderFeed(messages) {
 }
 function renderQuiz(quiz) {
   // Keep existing radio nodes (focus and checked choices) across routine updates.
-  const key = quiz ? JSON.stringify([quiz.id, quiz.questions]) : null;
+  const key = quiz ? JSON.stringify([quiz.id, quiz.questions, quiz.locked]) : null;
   if (key === state.quizKey) return;
   const previous = new Map(
     [...$("quiz-content").querySelectorAll("input:checked")].map((input) => [
@@ -2071,6 +2161,10 @@ function renderQuiz(quiz) {
   if (!quiz || !quiz.questions.length) {
     $("quiz-content").textContent =
       "No quiz is available yet. Check back with your circle.";
+    return;
+  }
+  if (quiz.locked) {
+    $("quiz-content").replaceChildren(element("p", "The afterparty starts when the credits roll. The host will open trivia after the screening.", "quiz-lock"));
     return;
   }
   const fragment = document.createDocumentFragment();
@@ -2148,6 +2242,8 @@ function renderShows(shows) {
         fallback.hidden = false;
         image.hidden = true;
       });
+      // Lazy images must participate in layout before the browser starts loading.
+      image.hidden = false;
       image.src = src;
     }
     card.querySelector("h3").textContent = show.title;
@@ -2201,7 +2297,7 @@ for (const kind of ["create", "join"])
       actionStatus("Enter a nickname to join the circle.", true);
       return;
     }
-    const code = $("room-code").value.trim();
+    const code = $("room-code").value.trim().toUpperCase();
     if (kind === "join" && !code) {
       $("room-code").focus();
       return;
@@ -2425,6 +2521,156 @@ window.addEventListener("pageshow", () => {
     if (!document.hidden) state.poller?.start();
   }
 });
+// Synchronized playback shares the server's timeline; native media UI does not control the room.
+let currentScreenId = null;
+let latestScreen = null;
+let screenReceivedAt = 0;
+let heartbeatPending = false;
+const player = $("watch-player");
+player.muted = true;
+function screeningControls() {
+  const host = !!state.room?.me.isHost;
+  const screen = state.room?.screen;
+  const pending = state.pending.has("screen");
+  for (const id of ["load-sample", "save-media"]) $(id).disabled = !host || pending;
+  for (const id of ["screen-play", "screen-pause", "finish-screen", "screen-seek"])
+    $(id).disabled = !host || !screen || screen.finished || pending;
+  for (const id of ["enable-audio", "sync-video", "screen-fullscreen"]) $(id).disabled = !screen;
+  $("copy-invite").disabled = !state.room;
+  for (const id of ["media-title", "media-url", "media-duration"]) $(id).disabled = !host;
+}
+function timeLabel(seconds) {
+  const value = Math.max(0, Math.floor(seconds || 0));
+  return `${Math.floor(value / 60).toString().padStart(2, "0")}:${(value % 60).toString().padStart(2, "0")}`;
+}
+function desiredPosition() {
+  if (!latestScreen) return 0;
+  return Math.min(latestScreen.duration, latestScreen.position + (latestScreen.playing ? (performance.now() - screenReceivedAt) / 1000 : 0));
+}
+async function synchronizePlayer(force = false) {
+  const screen = latestScreen;
+  if (!screen || !player.readyState) return;
+  const expected = desiredPosition();
+  if (force || Math.abs(player.currentTime - expected) > 1.25) player.currentTime = expected;
+  if (screen.playing && !screen.finished && expected < screen.duration) {
+    try { await player.play(); }
+    catch { $("screen-status").textContent = "Your browser paused playback. Click Rejoin playback to start."; }
+  } else player.pause();
+}
+function renderScreen(room) {
+  const screen = room?.screen;
+  latestScreen = screen || null;
+  screenReceivedAt = performance.now();
+  if (!screen) {
+    if (currentScreenId) { player.pause(); player.removeAttribute("src"); player.load(); }
+    currentScreenId = null;
+    $("screen-empty").hidden = false;
+    $("screen-name").textContent = "The best seat is next to your friends.";
+    $("screen-badge").textContent = "READY WHEN YOU ARE";
+    $("screen-status").textContent = room ? "The host can load the sample film or a shareable video." : "Join your circle to start a screening.";
+    $("watch-progress").value = 0;
+    $("watch-progress-label").textContent = "Your watch progress appears here.";
+    $("screen-time").textContent = "00:00 / 00:00";
+    $("screen-seek").value = 0;
+    return;
+  }
+  $("screen-empty").hidden = true;
+  if (currentScreenId !== screen.id) {
+    currentScreenId = screen.id;
+    player.src = screen.url;
+    player.load();
+  }
+  $("screen-name").textContent = screen.title;
+  $("screen-badge").textContent = screen.finished ? "THE AFTERPARTY IS OPEN" : screen.playing ? "NOW WATCHING TOGETHER" : "LIGHTS DOWN. READY TO PLAY.";
+  $("screen-status").textContent = player.error ? "This video couldn’t load. Check the URL and try Rejoin playback." : screen.finished ? "Screening finished. Your trivia is ready below." : room.me.isHost ? "You’re hosting. Play, pause and seek for everyone in the circle." : "You’re watching with the host. Playback stays in sync automatically.";
+  const progress = screen.attendance;
+  $("watch-progress").value = Math.min(100, progress.seconds / progress.requiredSeconds * 100);
+  $("watch-progress-label").textContent = progress.awarded ? "+5 watch points earned. See your place on the leaderboard." : `${Math.floor(progress.seconds)} / ${Math.ceil(progress.requiredSeconds)} seconds watched toward +5 points`;
+  void synchronizePlayer();
+}
+function clearScreen() {
+  renderScreen(null);
+  $("members").replaceChildren();
+}
+function showMembers(room) {
+  $("members").replaceChildren(...room.members.map(member => element("span", `${member.nickname}${member.id === room.me.id ? " · you" : ""}`, "member-chip")));
+}
+for (const suggestion of document.querySelectorAll("[data-search]")) suggestion.addEventListener("click", () => {
+  $("show-search").value = suggestion.dataset.search;
+  $("clear-search").hidden = false;
+  $("search-form").requestSubmit();
+});
+$("copy-invite").addEventListener("click", () => void busy("invite", async () => {
+  if (!state.code) return;
+  const url = new URL(location.href);
+  url.search = ""; url.hash = "room-entry";
+  url.searchParams.set("room", state.code);
+  try { await navigator.clipboard.writeText(url.href); actionStatus("Invitation link copied. Send it to your circle."); }
+  catch { actionStatus(`Share this invitation code: ${state.code}`); }
+}));
+const invitation = new URLSearchParams(location.search).get("room");
+if (invitation) { $("room-code").value = invitation.toUpperCase(); switchTab(1); }
+$("load-sample").addEventListener("click", () => void busy("screen", async () => {
+  await mutate("/screen", { sample: true }, "PUT");
+  actionStatus("Sample film loaded. Press Play together when your circle is ready.");
+}));
+$("media-form").addEventListener("submit", event => {
+  event.preventDefault();
+  void busy("screen", async () => {
+    await mutate("/screen", { title: $("media-title").value.trim(), url: $("media-url").value.trim(), duration: Number($("media-duration").value) }, "PUT");
+    $("custom-media").open = false;
+    actionStatus("Video loaded for the circle.");
+  });
+});
+function playbackAction(action, position) {
+  void busy("screen", async () => {
+    const screen = state.room?.screen;
+    if (!screen || !state.room.me.isHost) return;
+    await mutate("/screen/control", { screenId: screen.id, action, ...(position === undefined ? {} : { position }) });
+    actionStatus(action === "finish" ? "The afterparty is open. Scroll down for trivia!" : "Shared playback updated.");
+  });
+}
+$("screen-play").addEventListener("click", () => playbackAction("play"));
+$("screen-pause").addEventListener("click", () => playbackAction("pause"));
+$("finish-screen").addEventListener("click", () => playbackAction("finish"));
+$("screen-seek").addEventListener("change", () => playbackAction("seek", Number($("screen-seek").value) / 100 * (latestScreen?.duration || 0)));
+$("sync-video").addEventListener("click", () => {
+  if (player.error) player.load();
+  else void synchronizePlayer(true);
+});
+$("enable-audio").addEventListener("click", () => {
+  player.muted = !player.muted;
+  $("enable-audio").textContent = player.muted ? "Enable sound" : "Mute sound";
+  void synchronizePlayer();
+});
+$("screen-fullscreen").addEventListener("click", () => {
+  const operation = player.requestFullscreen?.();
+  operation?.catch(() => actionStatus("Fullscreen isn’t available in this browser.", true));
+});
+player.addEventListener("loadedmetadata", () => void synchronizePlayer(true));
+player.addEventListener("error", () => { if (latestScreen) $("screen-status").textContent = "This video couldn’t load. Check the video URL or network access, then try Rejoin playback. Room chat and planning are still available."; });
+player.addEventListener("timeupdate", () => {
+  if (!latestScreen) return;
+  $("screen-time").textContent = `${timeLabel(player.currentTime)} / ${timeLabel(latestScreen.duration)}`;
+  if (document.activeElement !== $("screen-seek")) $("screen-seek").value = player.currentTime / latestScreen.duration * 100;
+});
+async function sendHeartbeat() {
+  const screen = state.room?.screen;
+  if (!screen || screen.finished || heartbeatPending || !state.code) return;
+  heartbeatPending = true;
+  try {
+    await request(roomPath("/screen/heartbeat"), { method: "POST", signal: state.controller.signal,
+      body: { screenId: screen.id, position: player.currentTime, watching: !document.hidden && !player.paused && !player.ended && player.readyState >= 3 } });
+  } catch (error) {
+    if (error.name !== "AbortError") $("screen-status").textContent = "Watch progress couldn’t sync. Reconnecting on the next update.";
+  } finally { heartbeatPending = false; }
+}
+setInterval(() => void sendHeartbeat(), 3000);
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) void sendHeartbeat();
+  else void synchronizePlayer(true);
+});
+
 controls();
 const savedRoom = load("watchcircle.room");
 if (savedRoom) enterRoom(savedRoom);

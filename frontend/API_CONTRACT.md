@@ -1,8 +1,7 @@
 # WatchCircle API — proposed v1
 
-This is a **new frontend-defined contract**, authorized for this empty repository.
-It has not been agreed with or verified against a backend. Backend owners must
-confirm or implement it. No backend, mock server, or Discord credentials are included.
+Implemented by `backend/` using Express 5 and persistent SQLite. The frontend and
+backend are tested together by the live HTTP and browser smoke tests.
 Serve `frontend/` and `/api/` from the same origin. All bodies and successful
 responses use JSON, except the leave response. Errors use
 `{ "error": { "code": "...", "message": "Safe user-facing explanation" } }`.
@@ -37,7 +36,7 @@ mutations are host-only; other members can vote, chat, and submit one quiz entry
 Quiz submissions are atomic, contain one answer for every question, and are
 scored server-side. Duplicate submissions should return 409, never score twice.
 Messages are ordered oldest to newest, and GET room returns the full current
-feed. No streaming, pagination, or extra endpoints are assumed.
+feed. The original routes remain compatible; additive shared-video endpoints are documented below.
 
 ## Response shapes
 
@@ -76,4 +75,46 @@ visibility changes pause reads; leaving, expiration, or loss of session stops
 them. A failed leave still exits the local room and reports that the server
 could not confirm departure. The same room code can be rejoined.
 
-No endpoint availability has been verified because this repository has no backend.
+Poster URLs are same-origin `/posters/:showId` paths. The backend resolves the
+canonical TVmaze image and serves only validated image types with bounded caching.
+No arbitrary URL is accepted. Attribution: show metadata and posters via TVmaze.
+
+## Shared-screening extensions
+
+Room state adds `screen: null | Screen` and the quiz adds `locked: boolean`.
+Existing fields and routes are unchanged. Without a screening, the quiz is
+immediately playable. With one, the host finishes the screening before submissions
+are accepted. Submission history stays one per participant per room.
+
+| Method | Route | JSON body | Result |
+| --- | --- | --- | --- |
+| PUT | `/api/rooms/:code/screen` | `{ "sample": true }` OR `{ "title": string, "url": HTTPS_URL, "duration": seconds }` | `{ "ok": true }`, host only |
+| POST | `/api/rooms/:code/screen/control` | `{ "screenId": string, "action": "play" / "pause" / "seek" / "finish", "position"?: seconds }` | `{ "ok": true }`, host only; seek requires position |
+| POST | `/api/rooms/:code/screen/heartbeat` | `{ "screenId": string, "position": seconds, "watching": boolean }` | `{ "ok": true }`, active member |
+| GET | `/api/health` | — | `{ "ok": true }` after database check |
+
+```ts
+type Screen = {
+  id: string;
+  title: string;
+  url: string; // bundled root-relative sample or host-supplied HTTPS media
+  duration: number; // seconds, 10–14,400 for custom media
+  position: number; // server-estimated position at the time of the response
+  playing: boolean;
+  finished: boolean;
+  serverTime: string; // ISO UTC
+  attendance: {
+    seconds: number;
+    requiredSeconds: number; // 80% of duration
+    awarded: boolean; // one 5-point watch award per participant per room
+  };
+};
+```
+
+A heartbeat never accepts client-supplied points or participant IDs. The server
+credits bounded elapsed time only while the timeline is playing and the client
+reports active viewing near that timeline. Gaps over 15 seconds and control
+changes invalidate a partial interval. Scores are friendly participation points,
+not a proof of attention. New videos clear viewing progress but do not reset
+previously earned watch or trivia points. The host can finish early to open
+trivia; this does not grant watch points. Custom URLs are loaded only by browsers.
