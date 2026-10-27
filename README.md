@@ -4,6 +4,16 @@ CineMaTicS is a responsive entertainment discovery and community website. The ho
 
 For beginner-friendly instructions to start the server-backed version, see [BACKEND-SETUP.md](BACKEND-SETUP.md).
 
+## Publish on Render
+
+[Deploy to Render](https://render.com/deploy?repo=https://github.com/EklavyPatel/MICROSOFT-TEAM-BLITZ)
+
+The repository includes a Render Blueprint with a Node web service and persistent
+storage for accounts and rooms. Review Render's paid service and disk pricing
+before creating it. See [DEPLOY.md](DEPLOY.md) for the exact steps, custom-domain
+settings and deployment checks. The public site is live only after Render reports
+**Live** and provides its HTTPS URL.
+
 ## Run it locally
 
 1. Install [Node.js 20 or newer](https://nodejs.org/) if it is not already installed.

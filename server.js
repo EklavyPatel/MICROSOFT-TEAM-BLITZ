@@ -1,5 +1,5 @@
 import http from 'node:http';
-import { readFile, writeFile, mkdir } from 'node:fs/promises';
+import { readFile, writeFile, mkdir, rename } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { randomBytes, scrypt as scryptCallback, timingSafeEqual } from 'node:crypto';
@@ -8,7 +8,12 @@ import { promisify } from 'node:util';
 const scrypt = promisify(scryptCallback);
 const root = path.dirname(fileURLToPath(import.meta.url));
 const publicDir = path.join(root, 'public');
-const dataDir = path.join(root, 'data');
+const dataDir = path.resolve(process.env.DATA_DIR || path.join(root, 'data'));
+const host = process.env.HOST || '0.0.0.0';
+const production = process.env.NODE_ENV === 'production';
+const appOrigin = process.env.APP_ORIGIN || process.env.RENDER_EXTERNAL_URL || '';
+if (production && (!appOrigin || new URL(appOrigin).protocol !== 'https:')) throw new Error('Set APP_ORIGIN to the public HTTPS origin before starting production.');
+let writeQueue = Promise.resolve();
 const dataFile = path.join(dataDir, 'cinematics.json');
 const sessions = new Map();
 const titleTriviaSessions = new Map();
@@ -19,7 +24,7 @@ const freshData = () => ({ users: [], watchlists: {}, rooms: [], messages: {}, c
 ] });
 let data = freshData();
 await mkdir(dataDir, { recursive: true });
-try { data = { ...freshData(), ...JSON.parse(await readFile(dataFile, 'utf8')) }; } catch { await save(); }
+try { data = { ...freshData(), ...JSON.parse(await readFile(dataFile, 'utf8')) }; } catch (error) { if (error.code !== 'ENOENT') throw error; await save(); }
 for (const room of data.rooms) {
   room.ownerId ||= data.users.find(user => user.name === room.owner)?.id || '';
   data.roomMembers[room.id] ||= {};
@@ -28,7 +33,15 @@ for (const room of data.rooms) {
   data.roomSubmissions[room.id] ||= {};
   if (room.ownerId) data.roomMembers[room.id][room.ownerId] ||= { joinedAt: room.createdAt };
 }
-async function save() { await writeFile(dataFile, JSON.stringify(data, null, 2)); }
+async function save() {
+  const snapshot = JSON.stringify(data, null, 2);
+  const pending = writeQueue.then(async () => {
+    await writeFile(dataFile + '.tmp', snapshot, { mode: 0o600 });
+    await rename(dataFile + '.tmp', dataFile);
+  });
+  writeQueue = pending.catch(() => {});
+  return pending;
+}
 function send(res, status, value, headers = {}) {
   res.writeHead(status, { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store', ...headers });
   res.end(JSON.stringify(value));
@@ -118,12 +131,12 @@ async function api(req, res, url) {
       if (!user || !timingSafeEqual(Buffer.from(user.hash, 'hex'), Buffer.from((await scrypt(password, user.salt, 64)).toString('hex'), 'hex'))) return send(res, 401, { error: 'Email or password is incorrect.' });
     }
     const token = randomBytes(32).toString('hex'); sessions.set(token, user.id);
-    return send(res, 200, { user: publicUser(user) }, { 'set-cookie': `cinematics_session=${token}; HttpOnly; SameSite=Lax; Path=/; Max-Age=604800` });
+    return send(res, 200, { user: publicUser(user) }, { 'set-cookie': `cinematics_session=${token}; HttpOnly; SameSite=Lax; Path=/; Max-Age=604800${production ? '; Secure' : ''}` });
   }
   if (req.method === 'POST' && p === '/api/signout') {
     const token = (req.headers.cookie || '').split(';').map(x => x.trim()).find(x => x.startsWith('cinematics_session='))?.split('=')[1];
     if (token) sessions.delete(token);
-    return send(res, 200, { ok: true }, { 'set-cookie': 'cinematics_session=; HttpOnly; SameSite=Lax; Path=/; Max-Age=0' });
+    return send(res, 200, { ok: true }, { 'set-cookie': `cinematics_session=; HttpOnly; SameSite=Lax; Path=/; Max-Age=0${production ? '; Secure' : ''}` });
   }
   if (req.method === 'PATCH' && p === '/api/profile') {
     const user = requireUser(req, res); if (!user) return;
@@ -289,6 +302,14 @@ const mime = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=u
 const server = http.createServer(async (req, res) => {
   const url = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
   try {
+    res.setHeader('X-Content-Type-Options', 'nosniff');
+    res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+    res.setHeader('X-Frame-Options', 'DENY');
+    if (url.pathname === '/api/health' && req.method === 'GET') return send(res, 200, { ok: true });
+    if (url.pathname.startsWith('/api/') && !['GET', 'HEAD', 'OPTIONS'].includes(req.method)) {
+      if (!String(req.headers['content-type'] || '').startsWith('application/json')) return send(res, 400, { error: 'Send application/json.' });
+      if (req.headers['sec-fetch-site'] === 'cross-site' || (req.headers.origin && req.headers.origin !== (appOrigin || url.origin))) return send(res, 403, { error: 'Cross-origin requests are not allowed.' });
+    }
     if (url.pathname.startsWith('/api/')) return await api(req, res, url);
     const relative = decodeURIComponent(url.pathname === '/' ? '/index.html' : url.pathname);
     const file = path.resolve(publicDir, `.${relative}`);
@@ -305,4 +326,12 @@ const server = http.createServer(async (req, res) => {
     res.writeHead(200, { 'content-type': type, ...((ext === '.mp4' || ext === '.webm') ? { 'accept-ranges': 'bytes' } : {}) }); res.end(content);
   } catch (error) { console.error(error); if (!res.headersSent) send(res, 500, { error: 'Something went wrong. Please try again.' }); }
 });
-server.listen(port, '127.0.0.1', () => console.log(`CineMaTicS is ready at http://localhost:${port}`));
+server.listen(port, host, () => console.log(`CineMaTicS listening on ${host}:${port}`));
+
+let stopping = false;
+for (const signal of ['SIGTERM', 'SIGINT']) process.on(signal, () => {
+  if (stopping) return;
+  stopping = true;
+  server.close(async () => { await writeQueue; process.exit(0); });
+  setTimeout(() => process.exit(1), 10000).unref();
+});
