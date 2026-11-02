@@ -40,5 +40,10 @@ test('production host, health, HTTPS cookies, CSRF, media ranges and persistent 
     await start();
     const login = await fetch(url('/api/signin'), { method: 'POST', headers: { 'content-type': 'application/json', origin: 'https://cinematics.example' }, body: JSON.stringify({ email: 'member@example.test', password: 'Test-password-123' }) });
     assert.equal(login.status, 200);
+    const loginCookie = login.headers.get('set-cookie').split(';')[0];
+    const signout = await fetch(url('/api/signout'), { method: 'POST', headers: { 'content-type': 'application/json', origin: 'https://cinematics.example', cookie: loginCookie }, body: '{}' });
+    assert.equal(signout.status, 200);
+    assert.match(signout.headers.get('set-cookie'), /Max-Age=0/);
+    assert.equal((await (await fetch(url('/api/me'), { headers: { cookie: loginCookie } })).json()).user, null);
   } finally { await stop(); await rm(directory, { recursive: true, force: true }); }
 });
