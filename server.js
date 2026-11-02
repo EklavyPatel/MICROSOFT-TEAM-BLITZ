@@ -94,7 +94,7 @@ const roomTriviaBank = [
   ['Which sitcom is set in Pawnee, Indiana?', 'Parks and Recreation', '30 Rock', 'Community', 'Superstore']
 ];
 async function makeRoomTrivia(movieTitle) {
-  const title = String(movieTitle || 'the selected movie').trim(); let info = {};
+  const title = String(movieTitle || 'the selected movie').trim(); let info = { genres: [] };
   try {
     const response = await fetch(`https://en.wikipedia.org/w/api.php?action=query&generator=search&gsrsearch=${encodeURIComponent(`${title} film`)}&gsrlimit=10&prop=extracts&exintro=1&explaintext=1&format=json&origin=*`, { headers: { 'user-agent': 'CineMaTicS/1.0 (movie trivia)' }, signal: AbortSignal.timeout(9000) });
     if (!response.ok) throw new Error('Movie details unavailable');
@@ -234,7 +234,15 @@ async function api(req, res, url) {
     if (!members[user.id]) return send(res, 403, { error: 'Join this room before opening its community cinema.' });
     if (req.method === 'GET' && !action) {
       const now = Date.now(), screen = room.screen ? { ...room.screen } : null;
-      if (screen) { screen.position = Math.min(screen.duration, screen.position + (screen.playing ? Math.max(0, now - screen.updatedAt) / 1000 : 0)); screen.playing = Boolean(screen.playing && screen.position < screen.duration && !screen.finished); screen.serverTime = new Date(now).toISOString(); }
+      if (screen) {
+        const finishedAt = screen.updatedAt + (screen.duration - screen.position) * 1000;
+        screen.position = Math.min(screen.duration, screen.position + (screen.playing ? Math.max(0, now - screen.updatedAt) / 1000 : 0));
+        if (screen.playing && screen.position >= screen.duration && !screen.finished) {
+          Object.assign(room.screen, { position: screen.duration, playing: false, finished: true, finishedAt, updatedAt: finishedAt });
+          Object.assign(screen, room.screen); await save();
+        }
+        screen.serverTime = new Date(now).toISOString();
+      }
       const progress = data.roomProgress[roomId] ||= {}, scores = data.roomScores[roomId] ||= {};
       const leaderboard = Object.keys(members).map(userId => ({ userId, name: data.users.find(item => item.id === userId)?.name || 'Member', points: Number(scores[userId]) || 0, watchedSeconds: Math.floor(progress[userId]?.seconds || 0) })).sort((a,b)=>b.points-a.points || a.name.localeCompare(b.name));
       const submission = data.roomSubmissions[roomId]?.[user.id];
@@ -264,13 +272,16 @@ async function api(req, res, url) {
       if (input.action === 'play' && !screen.finished) screen.playing = true;
       if (input.action === 'pause') screen.playing = false;
       if (input.action === 'seek') screen.position = Math.max(0, Math.min(screen.duration, Number(input.position) || 0));
-      if (input.action === 'finish') { screen.playing = false; screen.finished = true; screen.position = screen.duration; }
+      if (input.action === 'finish') { screen.playing = false; screen.finished = true; screen.finishedAt = now; screen.position = screen.duration; }
       screen.updatedAt = now; await save(); return send(res, 200, { ok: true });
     }
     if (req.method === 'POST' && action === 'heartbeat') {
       const input = await body(req), screen = room.screen; if (!screen || input.screenId !== screen.id) return send(res, 409, { error: 'The screening changed. Refresh the room.' });
       const now = Date.now(), progress = data.roomProgress[roomId] ||= {}, item = progress[user.id] ||= { seconds: 0, lastAt: now, awarded: false };
-      if (input.watching === true && screen.playing && !screen.finished) item.seconds += Math.min(15, Math.max(0, now - item.lastAt) / 1000);
+      // Settle the final playback interval even if the browser has already paused at the end.
+      const until = screen.finished ? Math.min(now, screen.finishedAt || screen.updatedAt) : now;
+      if ((input.watching === true && screen.playing && !screen.finished) || (screen.finished && item.watching)) item.seconds += Math.min(15, Math.max(0, until - item.lastAt) / 1000);
+      item.watching = input.watching === true && screen.playing && !screen.finished;
       item.lastAt = now;
       if (!item.awarded && item.seconds >= screen.duration * .8) { item.awarded = true; data.roomScores[roomId][user.id] = (Number(data.roomScores[roomId][user.id]) || 0) + 10; }
       await save(); return send(res, 200, { seconds: Math.floor(item.seconds), awarded: item.awarded });
