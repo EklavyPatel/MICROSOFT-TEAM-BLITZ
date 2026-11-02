@@ -72,3 +72,5 @@ dialog#cinemaDialog{width:min(1260px,calc(100% - 24px));max-width:none;max-heigh
 @media(max-width:560px){.row-title{font-size:18px}.feature h3,.community-nav h3{font-size:15px}.cinema-brand h2{font-size:21px}}
 
 .cinema-top{flex-wrap:wrap}#cinemaInvitePanel{flex-basis:100%;padding:14px;border:1px solid #ffffff26;border-radius:10px}#cinemaInvitePanel label{display:block;margin-bottom:8px}#cinemaInviteLink{width:100%;margin-bottom:10px}#cinemaInviteStatus{font-size:12px;color:#bdc3ce}
+
+.poster-unavailable{color:var(--muted);font-size:12px;text-align:center;padding:12px}.result-art img[hidden],.poster-unavailable[hidden]{display:none}
